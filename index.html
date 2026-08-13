@@ -23,6 +23,7 @@
 @keyframes reveal{0%{opacity:0;transform:scale(.88);filter:brightness(1.8) blur(4px)}60%{opacity:1;transform:scale(1.02);filter:brightness(1.12) blur(0)}100%{opacity:1;transform:scale(1);filter:brightness(1) blur(0)}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @media(max-width:600px){.keypad{grid-template-columns:repeat(3,58px)}.key{padding:13px}#notepadScreen{padding:12px 7px}.letter-image{border-radius:20px}}
+.music-button{position:fixed;right:16px;bottom:16px;z-index:20;border:2px solid #f58fbd;background:#ffffffdd;color:#a9165b;border-radius:999px;padding:10px 16px;font-size:15px;font-weight:bold;box-shadow:0 0 18px #ff75b5aa;cursor:pointer}.music-button:hover{transform:scale(1.04);background:white}
 </style>
 </head>
 <body>
@@ -35,7 +36,8 @@
 <button class="key" onclick="enterDigit('7')">7</button><button class="key" onclick="enterDigit('8')">8</button><button class="key" onclick="enterDigit('9')">9</button>
 <div></div><button class="key" onclick="enterDigit('0')">0</button><div></div>
 </div></div>
-<audio id="loveMusic" src="musica.mp3" loop preload="auto"></audio>
+<audio id="loveMusic" src="./musica.mp3" loop preload="auto"></audio>
+<button id="musicButton" class="music-button" type="button" hidden>🎵 Activar música</button>
 
 <div id="notepadScreen" class="screen">
 <div class="letter-wrap">
@@ -45,9 +47,33 @@
 </div></div>
 <script>
 const correctPassword='130226';let input='';
-function enterDigit(digit){if(input.length<6)input+=digit;const d=document.getElementById('inputDisplay');d.textContent=input.padEnd(6,'•');if(input.length===6){if(input===correctPassword){document.getElementById('passwordScreen').classList.remove('active');document.getElementById('notepadScreen').classList.add('active');
-      const music = document.getElementById('loveMusic');
-      music.volume = 0.65;
-      music.play().catch(() => {})}else{alert('Contraseña incorrecta, intenta de nuevo 💗');input='';d.textContent='••••••'}}}
+const music=document.getElementById('loveMusic');
+const musicButton=document.getElementById('musicButton');
+music.volume=0.65;
+function startMusic(){
+  music.volume=0.65;
+  music.load();
+  const promise=music.play();
+  if(promise){
+    promise.then(()=>{musicButton.hidden=true;}).catch(()=>{musicButton.hidden=false;});
+  }
+}
+musicButton.addEventListener('click',startMusic);
+function enterDigit(digit){
+  if(input.length<6)input+=digit;
+  const d=document.getElementById('inputDisplay');
+  d.textContent=input.padEnd(6,'•');
+  if(input.length===6){
+    if(input===correctPassword){
+      document.getElementById('passwordScreen').classList.remove('active');
+      document.getElementById('notepadScreen').classList.add('active');
+      startMusic();
+    }else{
+      alert('Contraseña incorrecta, intenta de nuevo 💗');
+      input='';
+      d.textContent='••••••';
+    }
+  }
+}
 </script>
 </body></html>
