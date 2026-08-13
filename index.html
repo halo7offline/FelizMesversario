@@ -35,6 +35,8 @@
 <button class="key" onclick="enterDigit('7')">7</button><button class="key" onclick="enterDigit('8')">8</button><button class="key" onclick="enterDigit('9')">9</button>
 <div></div><button class="key" onclick="enterDigit('0')">0</button><div></div>
 </div></div>
+<audio id="loveMusic" src="musica.mp3" loop preload="auto"></audio>
+
 <div id="notepadScreen" class="screen">
 <div class="letter-wrap">
 <img class="letter-image" src="carta-romantica.png" alt="Carta romántica">
@@ -43,6 +45,9 @@
 </div></div>
 <script>
 const correctPassword='130226';let input='';
-function enterDigit(digit){if(input.length<6)input+=digit;const d=document.getElementById('inputDisplay');d.textContent=input.padEnd(6,'•');if(input.length===6){if(input===correctPassword){document.getElementById('passwordScreen').classList.remove('active');document.getElementById('notepadScreen').classList.add('active')}else{alert('Contraseña incorrecta, intenta de nuevo 💗');input='';d.textContent='••••••'}}}
+function enterDigit(digit){if(input.length<6)input+=digit;const d=document.getElementById('inputDisplay');d.textContent=input.padEnd(6,'•');if(input.length===6){if(input===correctPassword){document.getElementById('passwordScreen').classList.remove('active');document.getElementById('notepadScreen').classList.add('active');
+      const music = document.getElementById('loveMusic');
+      music.volume = 0.65;
+      music.play().catch(() => {})}else{alert('Contraseña incorrecta, intenta de nuevo 💗');input='';d.textContent='••••••'}}}
 </script>
 </body></html>
